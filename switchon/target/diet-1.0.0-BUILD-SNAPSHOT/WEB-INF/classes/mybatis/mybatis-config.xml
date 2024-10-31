@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+	  <!-- Oracle 테이블의 컬럼이 mem_id 이고, DTO의 필드변수가 memId 일때 매칭이 가능하게 하는 옵션 -->
+	  <setting name="mapUnderscoreToCamelCase" value="true"/>
+	  <!-- 널 허용 -->
+	  <setting name="jdbcTypeForNull" value="NULL" /> 
+	  <!-- MyBatis의 로그 사용 설정 -->
+	  <setting name="logImpl" value="LOG4J" />
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="com.switchon.diet.member.vo.MemberVO" alias="MemberVO" />
+		<typeAlias type="com.switchon.diet.schedule.vo.DayVO" alias="DayVO" />
+		<typeAlias type="com.switchon.diet.schedule.vo.TimeVO" alias="TimeVO" />
+		<typeAlias type="com.switchon.diet.schedule.vo.WeekVO" alias="WeekVO" />
+		<typeAlias type="com.switchon.diet.schedule.vo.ScheduleVO" alias="ScheduleVO" />
+		<typeAlias type="com.switchon.diet.weight.vo.WeightVO" alias="WeightVO" />
+		<typeAlias type="com.switchon.diet.board.vo.BoardKetonVO" alias="BoardKetonVO" />
+		<typeAlias type="com.switchon.diet.board.vo.BoardProteinVO" alias="BoardProteinVO" />
+		<typeAlias type="com.switchon.diet.Message.vo.AlramVO" alias="AlramVO" />
+	</typeAliases>
+	
+</configuration>

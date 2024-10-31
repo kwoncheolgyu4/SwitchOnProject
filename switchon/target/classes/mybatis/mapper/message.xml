@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.switchon.diet.Message.dao.IMessageDAO">
+
+	<select id="timeList" resultType="AlramVO" parameterType="MemberVO">
+	
+		SELECT TO_TIMESTAMP(TO_CHAR(c.sched_date, 'YYYY-MM-DD') || ' ' || c.sched_time, 'YYYY-MM-DD HH24:MI:SS') AS sched_date
+		     , c.sche_method
+		FROM members a 
+		    ,schedule_creation b
+		    ,schedule_details c
+		WHERE a.mem_id = b.mem_id
+		  AND b.schedule_id = c.schedule_id
+		  AND a.mem_id = #{memId}
+		  AND b.use_yn ='Y'
+	
+	</select>
+
+
+</mapper>

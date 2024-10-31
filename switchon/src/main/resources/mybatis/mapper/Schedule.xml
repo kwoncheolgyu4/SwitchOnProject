@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.switchon.diet.schedule.dao.IScheduleDAO">
+
+	<!-- ResultMap 정의-->
+	<resultMap id="SchedMap" type="com.switchon.diet.schedule.vo.WeekVO">
+		    <id property="scheduleId" column="schedule_id"/>
+		    <id property="scheWeek" column="sche_week"/>
+		    <!-- DayVO 매핑 -->
+		    <collection property="days" ofType="com.switchon.diet.schedule.vo.DayVO">
+		        <id property="scheDay" column="sche_day"/>
+		        <result property="schedDate" column="sched_date"/>
+		        <result property="scheMethod" column="sche_method"/>
+		        <!-- TimeVO 매핑 -->
+		        <collection property="times" ofType="com.switchon.diet.schedule.vo.TimeVO">
+		            <id property="schedTime" column="sched_time"/>
+		            <result property="scheSeq" column="sche_seq"/>
+		        </collection>
+		    </collection>
+	</resultMap>
+	
+	<select id="schedList"  resultMap="SchedMap" parameterType="MemberVO">
+		SELECT b.schedule_id
+		      ,c.sche_week
+		      ,c.sche_day
+		      ,TO_CHAR(c.sched_date,'YYYY-MM-DD') as sched_date
+		      ,c.sche_method
+		      ,c.sched_time
+		      ,c.sche_seq
+		FROM members a 
+		    ,schedule_creation b
+		    ,schedule_details c
+		WHERE a.mem_id = b.mem_id
+		  AND b.schedule_id = c.schedule_id
+		  AND a.mem_id = #{memId}
+		  AND b.use_yn ='Y'
+		ORDER BY c.sche_seq
+	</select>
+	
+		
+	<insert id="callInsertSchedule" statementType="CALLABLE" parameterType="ScheduleVO">
+	
+		<selectKey keyProperty="scheduleId" resultType="int" order="BEFORE">
+		    SELECT NVL(MAX(schedule_id), 0) + 1 FROM SCHEDULE_CREATION
+		</selectKey>
+		
+	    {CALL INSERT_SCHEDULE(
+	      #{memId, mode=IN, jdbcType=VARCHAR},
+	      #{scheduleId, mode=IN, jdbcType=INTEGER},
+	      #{createDt, mode=IN, jdbcType=DATE},
+	      #{useYn, mode=IN, jdbcType=CHAR}
+	    )}
+	    
+	</insert>
+
+
+	<update id="updateScheduleMethod" parameterType="DayVO">
+	
+	    UPDATE SCHEDULE_DETAILS
+	    SET SCHE_METHOD = #{scheMethod}
+	    WHERE SCHEDULE_ID = #{scheduleId}
+	    AND SCHED_DATE = #{schedDate}
+	    
+	</update>
+
+	<update id="updateScheduleTime" parameterType="TimeVO">
+	
+	    UPDATE SCHEDULE_DETAILS
+	    SET SCHED_TIME = #{schedTime}
+	    WHERE SCHEDULE_ID = #{scheduleId}
+	    AND SCHE_SEQ = #{scheSeq}
+	    
+	</update>
+
+
+
+
+
+</mapper>

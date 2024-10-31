@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.switchon.diet.board.dao.IBoardDAO">
+
+	<select id="getKetonList" resultType="BoardKetonVO">
+	
+		<![CDATA[
+	    SELECT * FROM (
+	        SELECT ROW_NUMBER() OVER (ORDER BY keton_hit DESC) AS rank_num,
+	               keton_name,
+	               keton_price,
+	               keton_url
+	        FROM keton_choice
+	    )
+	    WHERE rank_num <= 10
+	    ]]>
+	
+	</select>
+	
+	<select id="getProteinList" resultType="BoardProteinVO">
+	
+		<![CDATA[
+	    SELECT * FROM (
+		    SELECT ROW_NUMBER() OVER (ORDER BY protein_hit DESC) AS rank_num,
+		           protein_title,
+		           protein_price,
+		           protein_url
+		    FROM protein_choice
+		)
+		WHERE rank_num <= 10
+	    ]]>
+	
+	</select>
+	
+	
+</mapper>

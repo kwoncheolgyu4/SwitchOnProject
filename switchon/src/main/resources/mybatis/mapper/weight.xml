@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.switchon.diet.weight.dao.IWeightDAO">
+
+	<insert id="insertWeight" parameterType="WeightVO">
+		
+		INSERT INTO weight(mem_id, weight_num)
+		VALUES (#{memId}, #{weightNum})
+		
+	</insert>
+	
+	<select id="getWeightData" parameterType="String" resultType="WeightVO">
+		
+		SELECT weight_num
+		     , create_dt
+		FROM weight
+		WHERE use_yn = 'Y'
+		AND   mem_id = #{memId}
+		ORDER BY create_dt
+	
+	</select>
+	
+</mapper>
